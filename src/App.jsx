@@ -2,10 +2,13 @@ import { MainContainer, Sidebar, Search } from "@chatscope/chat-ui-kit-react";
 // import { WebSocketDemo } from "./WebSocket";
 import Conversations from "./components/Conversations";
 import Chats from "./components/chat/Chats";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+// TODO: Need to have a basic chat history for simultaneous chats, authentication
+// TODO: UI improvements (message indication, Last message display)
 
 function App() {
-  let [userName] = useState("Krish");
+  let [userName, setUserName] = useState("");
   let [contactName, setContactName] = useState("Sundar");
   let [conversations, setConversations] = useState([
     {
@@ -18,7 +21,19 @@ function App() {
       status: "available",
       active: false,
     },
+    {
+      name: "Krish",
+      status: "available",
+      active: false,
+    },
   ]);
+
+  useEffect(() => {
+    if (userName === "") {
+      let name = prompt("Enter the user name");
+      setUserName(name);
+    }
+  }, [userName]);
 
   let handleClick = (e) => {
     if (e.target.innerText === "") {

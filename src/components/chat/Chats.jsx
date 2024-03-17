@@ -15,7 +15,7 @@ import useWebSocket from "react-use-websocket";
 
 export default function Chats({ userName, contactName }) {
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(
-    "wss://yw0325xl9k.execute-api.us-east-1.amazonaws.com/Prod",
+    "wss://u4vbtuqd35.execute-api.us-east-1.amazonaws.com/Prod",
     {
       onOpen: (e) => console.log(e),
       onClose: (e) => console.log(e),
@@ -55,7 +55,7 @@ export default function Chats({ userName, contactName }) {
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
-      let messageText = lastJsonMessage.data.message;
+      let messageText = lastJsonMessage.message;
       handleMessageAppend(messageText, "incoming");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,6 +66,7 @@ export default function Chats({ userName, contactName }) {
     sendJsonMessage({
       action: "send",
       send_to: contactName,
+      sent_by: userName,
       message: messageText,
     });
     handleMessageAppend(messageText, "outgoing");
