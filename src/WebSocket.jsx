@@ -2,12 +2,15 @@ import { useCallback } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
 export const WebSocketDemo = () => {
-  const { sendJsonMessage, readyState } = useWebSocket(
-    "wss://yw0325xl9k.execute-api.us-east-1.amazonaws.com/Prod?name=kri",
+  let userName = "kri";
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+    "wss://yw0325xl9k.execute-api.us-east-1.amazonaws.com/Prod",
     {
       onOpen: (e) => console.log(e),
       onClose: (e) => console.log(e),
       onMessage: (e) => console.log(e),
+      share: true,
+      queryParams: { name: userName },
     }
   );
 
@@ -35,7 +38,7 @@ export const WebSocketDemo = () => {
         onClick={handleClickSendMessage}
         disabled={readyState !== ReadyState.OPEN}
       >
-        Click Me to send 'Hello'
+        Click Me to send Hello
       </button>
       <span>The WebSocket is currently {connectionStatus}</span>
     </div>

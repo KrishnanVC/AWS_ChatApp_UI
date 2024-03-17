@@ -10,21 +10,27 @@ import {
   VideoCallButton,
   InfoButton,
 } from "@chatscope/chat-ui-kit-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useWebSocket from "react-use-websocket";
 
-export default function Chats({ userName }) {
-  console.log("re-rendering");
-  let [avatar] = useState({
-    name: userName,
-    info: "Active 10 mins ago",
-  });
+export default function Chats({ userName, contactName }) {
+  const { sendJsonMessage, lastJsonMessage } = useWebSocket(
+    "wss://yw0325xl9k.execute-api.us-east-1.amazonaws.com/Prod",
+    {
+      onOpen: (e) => console.log(e),
+      onClose: (e) => console.log(e),
+      onMessage: (e) => console.log(e),
+      share: true,
+      queryParams: { name: userName },
+    }
+  );
 
   let [messages, setMessages] = useState([
     {
       direction: "incoming",
       message: "Hello my friend",
       position: "single",
-      sender: "Zoe",
+      sender: contactName,
       sentTime: "15 mins ago",
       last: false,
     },
@@ -32,7 +38,7 @@ export default function Chats({ userName }) {
       direction: "incoming",
       message: "Hello my friend",
       position: "single",
-      sender: "Zoe",
+      sender: contactName,
       sentTime: "15 mins ago",
       last: true,
     },
@@ -40,19 +46,35 @@ export default function Chats({ userName }) {
       direction: "outgoing",
       message: "Hello my friend",
       position: "single",
-      sender: "Patrik",
+      sender: userName,
       sentTime: "15 mins ago",
       last: true,
     },
   ]);
   let [message, setMessage] = useState("");
 
-  let handleMessageAppend = (messageText) => {
-    setMessage("");
+  useEffect(() => {
+    if (lastJsonMessage !== null) {
+      let messageText = lastJsonMessage.data.message;
+      handleMessageAppend(messageText, "incoming");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastJsonMessage]);
 
+  let handleSendMessage = (messageText) => {
+    setMessage("");
+    sendJsonMessage({
+      action: "send",
+      send_to: contactName,
+      message: messageText,
+    });
+    handleMessageAppend(messageText, "outgoing");
+  };
+
+  let handleMessageAppend = (messageText, direction) => {
     let message = {
       message: messageText,
-      direction: "outgoing",
+      direction: direction,
       position: "single",
       sender: userName,
       sentTime: "15 mins ago",
@@ -61,7 +83,7 @@ export default function Chats({ userName }) {
 
     setMessages((messages) => {
       let lastMessage = messages[messages.length - 1];
-      if (lastMessage.direction === "outgoing") {
+      if (lastMessage.direction === direction) {
         lastMessage.last = false;
       }
 
@@ -78,10 +100,10 @@ export default function Chats({ userName }) {
       <ConversationHeader>
         <ConversationHeader.Back />
         <Avatar
-          name={avatar.name}
+          name={contactName}
           src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
         />
-        <ConversationHeader.Content info={avatar.info} userName={avatar.name} />
+        <ConversationHeader.Content info="Active" userName={contactName} />
         <ConversationHeader.Actions>
           <VoiceCallButton />
           <VideoCallButton />
@@ -110,7 +132,7 @@ export default function Chats({ userName }) {
         autoFocus
         value={message}
         onChange={(e) => setMessage(e)}
-        onSend={() => handleMessageAppend(message)}
+        onSend={() => handleSendMessage(message)}
         placeholder="Type message here"
       />
     </ChatContainer>

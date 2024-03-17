@@ -1,46 +1,11 @@
+/* eslint-disable react/prop-types */
 import {
   Avatar,
   Conversation,
   ConversationList,
 } from "@chatscope/chat-ui-kit-react";
-import { useState } from "react";
 
-export default function Conversations() {
-  let [conversations, setConversations] = useState([
-    {
-      name: "Lilly",
-      status: "available",
-      active: false,
-    },
-    {
-      name: "Zoe",
-      status: "available",
-      active: true,
-    },
-  ]);
-
-  let handleClick = (e) => {
-    if (e.target.innerText === "") {
-      console.log("Image clicked");
-      return "";
-    }
-    setConversations((converations) => {
-      let newConversations = converations.map((conversation) => {
-        if (conversation.name === e.target.innerText) {
-          return {
-            ...conversation,
-            active: true,
-          };
-        }
-        return {
-          ...conversation,
-          active: false,
-        };
-      });
-      return newConversations;
-    });
-  };
-
+export default function Conversations({ conversations, handleClick }) {
   return (
     <ConversationList>
       {conversations.map((conversation, id) => {
