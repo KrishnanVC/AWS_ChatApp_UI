@@ -1,6 +1,6 @@
 {
   "auth": {
-    "chatapp97712986": {
+    "chatapp816a1a28": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -13,12 +13,12 @@
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
-          "EMAIL"
+          "EMAIL",
+          "NAME"
         ],
         "socialProviders": [],
         "usernameAttributes": [
-          "EMAIL",
-          "PHONE_NUMBER"
+          "EMAIL"
         ],
         "verificationMechanisms": [
           "EMAIL"

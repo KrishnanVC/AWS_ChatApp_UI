@@ -1,8 +1,16 @@
 import { MainContainer, Sidebar, Search } from "@chatscope/chat-ui-kit-react";
-// import { WebSocketDemo } from "./WebSocket";
 import Conversations from "./components/Conversations";
 import Chats from "./components/chat/Chats";
 import { useEffect, useState } from "react";
+
+import { Amplify } from "aws-amplify";
+import { Authenticator } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
+import config from "./amplifyconfiguration.json";
+
+import { fetchUserAttributes } from "aws-amplify/auth";
+
+Amplify.configure(config);
 
 // TODO: Need to have a basic chat history for simultaneous chats, authentication
 // TODO: UI improvements (message indication, Last message display)
@@ -57,9 +65,14 @@ function App() {
   };
 
   useEffect(() => {
+    async function getUserInfo() {
+      let userInfo = await fetchUserAttributes();
+      let userName = userInfo.name;
+
+      handleUserName(userName);
+    }
     if (userName === "") {
-      let name = prompt("Enter the user name");
-      handleUserName(name);
+      getUserInfo();
     }
   }, [userName]);
 
@@ -89,18 +102,20 @@ function App() {
   };
 
   return (
-    <div style={{ position: "relative", height: "100vh" }}>
-      <MainContainer responsive>
-        <Sidebar position="left">
-          <Search placeholder="Search..." />
-          <Conversations
-            conversations={conversations}
-            handleClick={handleClick}
-          />
-        </Sidebar>
-        <Chats userName={userName} contactName={contactName} />
-      </MainContainer>
-    </div>
+    <Authenticator>
+      <div style={{ position: "relative", height: "100vh" }}>
+        <MainContainer responsive>
+          <Sidebar position="left">
+            <Search placeholder="Search..." />
+            <Conversations
+              conversations={conversations}
+              handleClick={handleClick}
+            />
+          </Sidebar>
+          <Chats userName={userName} contactName={contactName} />
+        </MainContainer>
+      </div>
+    </Authenticator>
   );
 }
 

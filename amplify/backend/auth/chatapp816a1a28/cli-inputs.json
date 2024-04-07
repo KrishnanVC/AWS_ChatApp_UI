@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "chatapp97712986_identitypool_97712986",
+    "identityPoolName": "chatapp816a1a28_identitypool_816a1a28",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "chatap97712986",
-    "userPoolName": "chatapp97712986_userpool_97712986",
+    "resourceNameTruncated": "chatap816a1a28",
+    "userPoolName": "chatapp816a1a28_userpool_816a1a28",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -20,7 +20,8 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-      "email"
+      "email",
+      "name"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
@@ -31,15 +32,16 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "chatap97712986_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "chatap816a1a28_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "97712986",
-    "resourceName": "chatapp97712986",
+    "sharedId": "816a1a28",
+    "resourceName": "chatapp816a1a28",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
     "usernameAttributes": [
-      "email, phone_number"
+      "email"
     ],
+    "triggers": {},
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
