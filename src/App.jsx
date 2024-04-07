@@ -15,23 +15,51 @@ function App() {
       name: "Sundar",
       status: "available",
       active: true,
+      self: false,
     },
     {
       name: "Gokul",
       status: "available",
       active: false,
+      self: false,
     },
     {
       name: "Krish",
       status: "available",
       active: false,
+      self: false,
     },
   ]);
+
+  let handleUserName = (name) => {
+    setUserName(name);
+    setConversations((conversations) => {
+      let userConversationWithYou = conversations.filter(
+        (conversation) => conversation["self"] === true
+      );
+
+      if (userConversationWithYou.length > 0) {
+        return conversations;
+      }
+
+      let userConversation = conversations.filter(
+        (conversation) => conversation["name"] === name
+      )[0];
+      userConversation["self"] = true;
+
+      let otherConversations = conversations.filter(
+        (conversation) => conversation["name"] !== name
+      );
+
+      let newConversations = [userConversation, ...otherConversations];
+      return newConversations;
+    });
+  };
 
   useEffect(() => {
     if (userName === "") {
       let name = prompt("Enter the user name");
-      setUserName(name);
+      handleUserName(name);
     }
   }, [userName]);
 
@@ -62,7 +90,6 @@ function App() {
 
   return (
     <div style={{ position: "relative", height: "100vh" }}>
-      {/* <WebSocketDemo /> */}
       <MainContainer responsive>
         <Sidebar position="left">
           <Search placeholder="Search..." />

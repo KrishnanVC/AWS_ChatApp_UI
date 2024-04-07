@@ -25,32 +25,28 @@ export default function Chats({ userName, contactName }) {
     }
   );
 
-  let [messages, setMessages] = useState([
-    {
-      direction: "incoming",
-      message: "Hello my friend",
-      position: "single",
-      sender: contactName,
-      sentTime: "15 mins ago",
-      last: false,
-    },
-    {
-      direction: "incoming",
-      message: "Hello my friend",
-      position: "single",
-      sender: contactName,
-      sentTime: "15 mins ago",
-      last: true,
-    },
-    {
-      direction: "outgoing",
-      message: "Hello my friend",
-      position: "single",
-      sender: userName,
-      sentTime: "15 mins ago",
-      last: true,
-    },
-  ]);
+  let [messages, setMessages] = useState({
+    Sundar: [
+      {
+        message: "Hi",
+        direction: "incoming",
+        position: "single",
+        sender: "Sundar",
+        sentTime: "15 mins ago",
+        last: true,
+      },
+    ],
+    Gokul: [
+      {
+        message: "Hi da",
+        direction: "incoming",
+        position: "single",
+        sender: "Gokul",
+        sentTime: "15 mins ago",
+        last: true,
+      },
+    ],
+  });
   let [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -82,7 +78,8 @@ export default function Chats({ userName, contactName }) {
       last: true,
     };
 
-    setMessages((messages) => {
+    setMessages((chats) => {
+      let messages = chats[contactName];
       let lastMessage = messages[messages.length - 1];
       if (lastMessage.direction === direction) {
         lastMessage.last = false;
@@ -92,7 +89,11 @@ export default function Chats({ userName, contactName }) {
         .slice(0, messages.length - 1)
         .concat([lastMessage, message]);
 
-      return newMessages;
+      let newChats = {
+        ...chats,
+        contactName: newMessages,
+      };
+      return newChats;
     });
   };
 
@@ -114,20 +115,21 @@ export default function Chats({ userName, contactName }) {
       <MessageList
       // typingIndicator={<TypingIndicator content="Zoe is typing" />}
       >
-        {messages.map((message, id) => {
-          if (message.last) {
-            return (
-              <Message key={id} model={message}>
-                <Avatar
-                  name={message.name}
-                  src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
-                />
-              </Message>
-            );
-          } else {
-            return <Message avatarSpacer key={id} model={message} />;
-          }
-        })}
+        {messages[contactName] &&
+          messages[contactName].map((message, id) => {
+            if (message.last) {
+              return (
+                <Message key={id} model={message}>
+                  <Avatar
+                    name={message.name}
+                    src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
+                  />
+                </Message>
+              );
+            } else {
+              return <Message avatarSpacer key={id} model={message} />;
+            }
+          })}
       </MessageList>
       <MessageInput
         autoFocus

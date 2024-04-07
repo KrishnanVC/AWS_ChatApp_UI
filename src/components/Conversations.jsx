@@ -15,7 +15,11 @@ export default function Conversations({ conversations, handleClick }) {
             // lastSenderName="Lilly"
             // unreadCnt={3}
             active={conversation.active}
-            name={conversation.name}
+            name={
+              conversation.self
+                ? `${conversation.name} (You)`
+                : conversation.name
+            }
             key={id}
             onClick={handleClick}
           >
