@@ -4,8 +4,36 @@ import {
   Conversation,
   ConversationList,
 } from "@chatscope/chat-ui-kit-react";
+import useWebSocket from "react-use-websocket";
+import { useContext, useEffect } from "react";
+import UserContext from "../Context";
 
 export default function Conversations({ conversations, handleClick }) {
+  let authToken = useContext(UserContext);
+  const { sendJsonMessage } = useWebSocket(
+    // eslint-disable-next-line no-undef
+    process.env.SERVER_URL,
+    {
+      onOpen: (e) => console.log(e),
+      onClose: (e) => console.log(e),
+      onMessage: (e) => console.log(e),
+      share: true,
+      queryParams: { name: "Krish" },
+      protocols: [authToken],
+    }
+  );
+
+  useEffect(() => {
+    function getUsersList() {
+      console.log("Hii");
+      sendJsonMessage({
+        action: "users",
+      });
+    }
+
+    getUsersList();
+  }, []);
+
   return (
     <ConversationList>
       {conversations.map((conversation, id) => {

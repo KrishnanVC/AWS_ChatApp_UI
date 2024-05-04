@@ -2,22 +2,17 @@ import { MainContainer, Sidebar, Search } from "@chatscope/chat-ui-kit-react";
 import Conversations from "./components/Conversations";
 import Chats from "./components/chat/Chats";
 import { useEffect, useState } from "react";
+import { fetchUserAttributes, fetchAuthSession } from "aws-amplify/auth";
 
-import { Amplify } from "aws-amplify";
-import { Authenticator } from "@aws-amplify/ui-react";
-import "@aws-amplify/ui-react/styles.css";
-import config from "./amplifyconfiguration.json";
+import UserContext from "./Context";
 
-import { fetchUserAttributes } from "aws-amplify/auth";
-
-Amplify.configure(config);
-
-// TODO: Need to have a basic chat history for simultaneous chats, authentication
 // TODO: UI improvements (message indication, Last message display)
 
 function App() {
   let [userName, setUserName] = useState("");
   let [contactName, setContactName] = useState("Sundar");
+  let [authToken, setAuthToken] = useState("");
+  // TODO: Need to get the connected users from the backend
   let [conversations, setConversations] = useState([
     {
       name: "Sundar",
@@ -67,12 +62,23 @@ function App() {
   useEffect(() => {
     async function getUserInfo() {
       let userInfo = await fetchUserAttributes();
+      console.log(userInfo);
       let userName = userInfo.name;
 
       handleUserName(userName);
     }
+    async function currentSession() {
+      try {
+        const { accessToken } = (await fetchAuthSession()).tokens ?? {};
+        setAuthToken(accessToken.toString());
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     if (userName === "") {
       getUserInfo();
+      currentSession();
     }
   }, [userName]);
 
@@ -102,7 +108,7 @@ function App() {
   };
 
   return (
-    <Authenticator>
+    <UserContext.Provider value={authToken}>
       <div style={{ position: "relative", height: "100vh" }}>
         <MainContainer responsive>
           <Sidebar position="left">
@@ -112,10 +118,14 @@ function App() {
               handleClick={handleClick}
             />
           </Sidebar>
-          <Chats userName={userName} contactName={contactName} />
+          <Chats
+            userName={userName}
+            contactName={contactName}
+            authToken={authToken}
+          />
         </MainContainer>
       </div>
-    </Authenticator>
+    </UserContext.Provider>
   );
 }
 

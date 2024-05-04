@@ -12,16 +12,21 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
+import { useContext } from "react";
+import UserContext from "../../Context";
 
 export default function Chats({ userName, contactName }) {
+  let authToken = useContext(UserContext);
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(
-    "wss://u4vbtuqd35.execute-api.us-east-1.amazonaws.com/Prod",
+    // eslint-disable-next-line no-undef
+    process.env.SERVER_URL,
     {
       onOpen: (e) => console.log(e),
       onClose: (e) => console.log(e),
       onMessage: (e) => console.log(e),
       share: true,
       queryParams: { name: userName },
+      protocols: [authToken],
     }
   );
 
@@ -79,15 +84,23 @@ export default function Chats({ userName, contactName }) {
     };
 
     setMessages((chats) => {
-      let messages = chats[contactName];
-      let lastMessage = messages[messages.length - 1];
-      if (lastMessage.direction === direction) {
-        lastMessage.last = false;
+      if (!chats.contains(contactName)) {
+        chats[contactName] = [];
       }
+      let messages = chats[contactName];
 
-      let newMessages = messages
-        .slice(0, messages.length - 1)
-        .concat([lastMessage, message]);
+      let newMessages = null;
+      if (messages.length > 0) {
+        let lastMessage = messages[messages.length - 1];
+        if (lastMessage.direction === direction) {
+          lastMessage.last = false;
+        }
+        newMessages = messages
+          .slice(0, messages.length - 1)
+          .concat([lastMessage, message]);
+      } else {
+        newMessages = [message];
+      }
 
       let newChats = {
         ...chats,
