@@ -14,11 +14,10 @@ export default function Contacts({
   let contacts = useContacts(userName, authToken);
 
   let handleContactChange = (e) => {
-    if (e.target.innerText === "") {
-      console.log("Image clicked");
-      return "";
-    }
     let name = e.target.innerText;
+    if (e.target.innerText === "") {
+      name = e.target.alt;
+    }
     if (name.endsWith(" (You)")) {
       name = name.split(" (You)")[0];
     }

@@ -15,7 +15,6 @@ import useWebSocket from "react-use-websocket";
 
 export default function Chats({ userName, contactName, authToken }) {
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(
-    // eslint-disable-next-line no-undef
     process.env.SERVER_URL,
     {
       onOpen: (e) => console.log(e),
@@ -33,13 +32,11 @@ export default function Chats({ userName, contactName, authToken }) {
 
   useEffect(() => {
     handleMessageReceive();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastJsonMessage]);
 
   let handleMessageReceive = () => {
     if (lastJsonMessage !== null) {
       let messageText = lastJsonMessage.message;
-      // TODO: Append to the chat based on the sender
       let sender = lastJsonMessage.sent_by;
       handleMessageAppend(messageText, "incoming", sender);
     }
@@ -116,9 +113,7 @@ export default function Chats({ userName, contactName, authToken }) {
           <InfoButton />
         </ConversationHeader.Actions>
       </ConversationHeader>
-      <MessageList
-      // typingIndicator={<TypingIndicator content="Zoe is typing" />}
-      >
+      <MessageList>
         {messages[contactName] &&
           messages[contactName].map((message, id) => {
             if (message.last) {

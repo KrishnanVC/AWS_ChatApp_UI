@@ -11,8 +11,18 @@ import config from "./amplifyconfiguration.json";
 Amplify.configure(config);
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Authenticator>
-      <App />
-    </Authenticator>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        width: "100%",
+      }}
+    >
+      <Authenticator>
+        <App />
+      </Authenticator>
+    </div>
   </React.StrictMode>
 );

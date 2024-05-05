@@ -14,7 +14,7 @@ function App() {
     return <div>Loading...</div>;
   }
   return (
-    <div style={{ position: "relative", height: "100vh" }}>
+    <div style={{ position: "relative", height: "100vh", width: "100%" }}>
       <MainContainer responsive>
         <Sidebar position="left">
           <Search placeholder="Search..." />
