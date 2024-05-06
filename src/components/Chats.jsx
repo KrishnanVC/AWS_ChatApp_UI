@@ -11,6 +11,7 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { useState, useEffect } from "react";
 import useWebSocket from "react-use-websocket";
+import profile from "../assets/default_profile.svg";
 
 export default function Chats({ userName, contactName, authToken }) {
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(
@@ -98,10 +99,9 @@ export default function Chats({ userName, contactName, authToken }) {
         <ConversationHeader.Back />
         <Avatar
           name={contactName === userName ? `${contactName} (You)` : contactName}
-          src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
+          src={profile}
         />
         <ConversationHeader.Content
-          info="Active"
           userName={
             contactName === userName ? `${contactName} (You)` : contactName
           }
@@ -118,10 +118,7 @@ export default function Chats({ userName, contactName, authToken }) {
             if (message.last) {
               return (
                 <Message key={id} model={message}>
-                  <Avatar
-                    name={message.name}
-                    src="https://chatscope.io/storybook/react/assets/zoe-E7ZdmXF0.svg"
-                  />
+                  <Avatar name={message.name} src={profile} />
                 </Message>
               );
             } else {

@@ -2,13 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="./src/assets/default_profile.svg"
+    />
     <link
       rel="stylesheet"
-      href="../node_modules/@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
+      href="./node_modules/@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>ChatApp</title>
   </head>
   <body>
     <div id="root"></div>
@@ -21,7 +25,13 @@
       crossorigin
       src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
     ></script>
-    <script src="node_modules/prop-types/prop-types.min.js"></script>
-    <script src="node_modules/@chatscope/chat-ui-kit-react/dist/chat-ui-kit-react.min.js"></script>
+    <script
+      src="node_modules/prop-types/prop-types.min.js"
+      type="module"
+    ></script>
+    <script
+      src="node_modules/@chatscope/chat-ui-kit-react/dist/chat-ui-kit-react.min.js"
+      type="module"
+    ></script>
   </body>
 </html>

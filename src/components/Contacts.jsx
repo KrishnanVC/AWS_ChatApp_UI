@@ -4,6 +4,7 @@ import {
   ConversationList,
 } from "@chatscope/chat-ui-kit-react";
 import useContacts from "../hooks/useContacts";
+import profile from "../assets/default_profile.svg";
 
 export default function Contacts({
   userName,
@@ -31,11 +32,7 @@ export default function Contacts({
         name={`${userName} (You)`}
         onClick={handleContactChange}
       >
-        <Avatar
-          name={`${userName} (You)`}
-          src="https://chatscope.io/storybook/react/assets/lilly-aj6lnGPk.svg"
-          status="available"
-        />
+        <Avatar name={`${userName} (You)`} src={profile} status="available" />
       </Conversation>
       <ConversationList>
         {contacts.map((conversation, id) => {
@@ -48,7 +45,7 @@ export default function Contacts({
             >
               <Avatar
                 name={conversation.name}
-                src="https://chatscope.io/storybook/react/assets/lilly-aj6lnGPk.svg"
+                src={profile}
                 status={conversation.status ? "available" : "unavailable"}
               />
             </Conversation>

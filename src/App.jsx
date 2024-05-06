@@ -11,8 +11,9 @@ function App() {
   let authToken = useAuthToken();
 
   if (authToken === null || userName === null) {
-    return <div>Loading...</div>;
+    return <h1>Loading ...</h1>;
   }
+
   return (
     <div style={{ position: "relative", height: "100vh", width: "100%" }}>
       <MainContainer responsive>
